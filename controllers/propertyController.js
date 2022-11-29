@@ -1,4 +1,3 @@
-const { mongoose } = require('mongoose');
 const Property = require('../models/property');
 const { cloudinary } = require('../utils/cloudinary');
 
