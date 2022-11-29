@@ -39,20 +39,14 @@ const propertySchema = new mongoose.Schema(
 			centralHeating: Boolean,
 		},
 		publisher: {
-			name: {
-				first: String,
-				last: String,
-			},
+			name: String,
 			number: String,
 		},
 	},
 	{ timestamps: true }
 );
 
-mongoose
-	.connect(URI)
-	.then((result) => console.log('connected to mongoDB'))
-	.catch((e) => console.log(e.message));
+mongoose.connect(URI).catch((e) => console.log(e.message));
 
 propertySchema.set('toJSON', {
 	transform: (document, returnedObject) => {
