@@ -7,6 +7,7 @@ const getProperties = async (req, res) => {
 };
 
 const createNewProperty = async (req, res) => {
+	const user_id = String(req.user._id);
 	try {
 		const { images } = req.body;
 		if (images) {
@@ -15,7 +16,7 @@ const createNewProperty = async (req, res) => {
 				const res = await cloudinary.uploader.upload(image, { folder: 'properties' });
 				urlsOfImages.push(res.url);
 			}
-			const tempProperty = { ...req.body, images: urlsOfImages };
+			const tempProperty = { ...req.body, images: urlsOfImages, publisher_id: user_id };
 			const property = await Property.create(tempProperty);
 			res.status(200).json(property);
 		}

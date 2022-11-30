@@ -17,6 +17,10 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	number: {
+		type: String,
+		required: true,
+	},
 });
 
 const URI = process.env.MONGO_URI;
@@ -30,15 +34,17 @@ userSchema.set('toJSON', {
 	},
 });
 
-userSchema.statics.signup = async function (email, password, name) {
-	if (!email || !password || !name) {
+userSchema.statics.signup = async function (email, password, name, number) {
+	if (!email || !password || !name || !number) {
 		throw Error('ყველა ველი უნდა იყოს შევსებული!');
 	}
 	if (!validator.isEmail(email)) {
 		throw Error('მიუთითეთ ვალიდური ელ-ფოსტა!');
 	}
 	if (!validator.isStrongPassword(password, { minSymbols: 0 })) {
-		throw Error('პაროლი უნდა შედგებოდეს მინიმუმ 8 სიმბოლოსგან და გამოყენებულ იქნას 1 ციფრი და მაღალი რეგისტრის ასო!');
+		throw Error(
+			'პაროლი უნდა შედგებოდეს მინიმუმ 8 სიმბოლოსგან და გამოყენებულ იქნას მინიმუმ ერთი ციფრი და მაღალი რეგისტრის ასო!'
+		);
 	}
 	const exists = await this.findOne({ email });
 	if (exists) {
@@ -46,7 +52,7 @@ userSchema.statics.signup = async function (email, password, name) {
 	}
 	const salt = await bcrypt.genSalt(10);
 	const hash = await bcrypt.hash(password, salt);
-	const user = await this.create({ email, password: hash, name });
+	const user = await this.create({ email, password: hash, name, number });
 	return user;
 };
 
