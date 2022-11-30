@@ -34,7 +34,7 @@ const getUserPosts = async (req, res) => {
 	if (!posts) {
 		res.status(404).json({ error: 'განცხადებები ვერ მოიძებნა!' });
 	} else {
-		res.status(200).json({ posts });
+		res.status(200).json(posts);
 	}
 };
 
