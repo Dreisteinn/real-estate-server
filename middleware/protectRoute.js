@@ -10,7 +10,7 @@ const protectRoute = async (req, res, next) => {
 		const token = authorization.split(' ')[1];
 		try {
 			const { id } = jwt.verify(token, process.env.SECRET);
-			req.user = await User.findOne({ id }).select('-password');
+			req.user = await User.findOne({ _id: id }).select('-password');
 			next();
 		} catch (e) {
 			console.log(e.message);
