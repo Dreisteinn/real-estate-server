@@ -1,6 +1,8 @@
 const User = require('../models/user');
 const Property = require('../models/property');
 const jwt = require('jsonwebtoken');
+const Message = require('../models/message');
+const message = require('../models/message');
 
 const createToken = (id) => {
 	return jwt.sign({ id }, process.env.SECRET, { expiresIn: '7d' });
@@ -38,4 +40,27 @@ const getUserPosts = async (req, res) => {
 	}
 };
 
-module.exports = { loginUser, signupUser, getUserPosts };
+const handleMessage = async (req, res) => {
+	const { text, subject, from, to } = req.body;
+	if (text && subject && from && to) {
+		const message = await Message.create({ text, subject, from, to });
+		res.status(201).json(message);
+	} else {
+		res.status(401).json({ error: 'გთხოვთ შეავსოთ ყველა ველი და სცადოთ ხელახლა!' });
+	}
+};
+
+const getUserMessage = async (req, res) => {
+	const {userid} = req.headers
+	const messages = await Message.find({to: userid});
+         console.log(messages)
+	if (messages) {
+		messages.length > 0
+			? res.status(200).json(messages)
+			: res.status(404).json({ message: 'შეტყობინებები ვერ მოიძებნა!' });
+	} else {
+		res.status(401).json({ message: 'ცუდი მოთხოვნა!' });
+	}
+};
+
+module.exports = { loginUser, signupUser, getUserPosts, handleMessage, getUserMessage };
