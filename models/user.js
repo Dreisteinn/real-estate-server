@@ -21,6 +21,7 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	messages: [],
 });
 
 const URI = process.env.MONGO_URI;
