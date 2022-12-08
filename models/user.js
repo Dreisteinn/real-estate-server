@@ -21,6 +21,11 @@ const userSchema = new mongoose.Schema({
 		type: String,
 		required: true,
 	},
+	createdAt: {
+		type: Date,
+		required: true,
+		default: Date.now,
+	},
 });
 
 const URI = process.env.MONGO_URI;
