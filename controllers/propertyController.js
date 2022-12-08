@@ -1,4 +1,5 @@
 const Property = require('../models/property');
+const user = require('../models/user');
 const { cloudinary } = require('../utils/cloudinary');
 
 const getProperties = async (req, res) => {
@@ -27,8 +28,9 @@ const createNewProperty = async (req, res) => {
 };
 
 const removeProperty = async (req, res) => {
-	const { id } = req.params.id;
-	const property = await Property.findOneAndDelete({ id });
+	const user_id = String(req.user._id);
+	const { id } = req.params;
+	const property = await Property.findOneAndDelete({ _id: id, publisher_id: user_id });
 	res.status(200).json({ message: 'Property has been deleted' });
 };
 
