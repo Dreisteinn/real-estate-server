@@ -3,30 +3,28 @@ const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcrypt');
 
-const userSchema = new mongoose.Schema({
-	name: {
-		type: String,
-		required: true,
+const userSchema = new mongoose.Schema(
+	{
+		name: {
+			type: String,
+			required: true,
+		},
+		email: {
+			type: String,
+			required: true,
+			unique: true,
+		},
+		password: {
+			type: String,
+			required: true,
+		},
+		number: {
+			type: String,
+			required: true,
+		},
 	},
-	email: {
-		type: String,
-		required: true,
-		unique: true,
-	},
-	password: {
-		type: String,
-		required: true,
-	},
-	number: {
-		type: String,
-		required: true,
-	},
-	createdAt: {
-		type: Date,
-		required: true,
-		default: Date.now,
-	},
-});
+	{ timestamps: true }
+);
 
 const URI = process.env.MONGO_URI;
 mongoose.connect(URI).catch((err) => console.log(err.message));
