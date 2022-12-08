@@ -66,9 +66,13 @@ const getUserMessage = async (req, res) => {
 const deleteMessage = async (req, res) => {
 	const user_id = String(req.user._id);
 	const { id } = req.params;
-	const msg = await Property.findOneAndDelete({ _id: id, to: user_id });
-	console.log(msg);
-	res.status(200).json({ message: 'Property has been deleted' });
+	const msg = await Message.findOneAndDelete({ _id: id, to: user_id });
+
+	if (msg !== null) {
+		res.status(200).json({ message: 'შეტყობინება წაიშალა!' });
+	} else {
+		res.status(404).json({ message: 'შეტყობინება ასეთი ID-ით ვერ მოიძებნა!' });
+	}
 };
 
 module.exports = { loginUser, signupUser, getUserPosts, handleMessage, getUserMessage, deleteMessage };

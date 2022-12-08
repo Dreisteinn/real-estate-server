@@ -31,14 +31,14 @@ const removeProperty = async (req, res) => {
 	const user_id = String(req.user._id);
 	const { id } = req.params;
 	const property = await Property.findOneAndDelete({ _id: id, publisher_id: user_id });
-	res.status(200).json({ message: 'Property has been deleted' });
+	res.status(200).json({ message: 'განცხადება წაიშალა!' });
 };
 
 const getProperty = async (req, res) => {
 	const { id } = req.params;
 	const property = await Property.findById(id);
 	if (!property) {
-		return res.status(404).json({ error: 'Property with this id not found' });
+		return res.status(404).json({ error: 'განცხადება ასეთი ID-ით ვერ მოიძებნა!' });
 	}
 	res.status(200).json({ property });
 };
