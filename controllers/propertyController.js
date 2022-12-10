@@ -32,13 +32,11 @@ const removeProperty = async (req, res) => {
 	try {
 		const { images } = await Property.findOneAndDelete({ _id: id, publisher_id: user_id });
 		for (image of images) {
-			if (!image.hasOwnProperty('public_id')) {
-				continue;
-			}
 			await cloudinary.uploader.destroy(image['public_id'], (error, result) => {
 				if (error) {
 					throw new Error(error);
 				}
+				return result;
 			});
 		}
 		res.status(200).json({ message: 'განცხადება წაიშალა!' });
