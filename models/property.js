@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const URI = process.env.MONGO_URI;
 const propertySchema = new mongoose.Schema(
 	{
-		images: [String],
+		images: [{ url: String, public_id: String }],
 		details: {
 			parking: { type: Number, required: true },
 			bathroom: { type: Number, required: true },

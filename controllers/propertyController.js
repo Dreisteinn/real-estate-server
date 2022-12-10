@@ -14,8 +14,8 @@ const createNewProperty = async (req, res) => {
 		if (images) {
 			let urlsOfImages = [];
 			for (image of images) {
-				const res = await cloudinary.uploader.upload(image, { folder: 'properties' });
-				urlsOfImages.push(res.url);
+				const resp = await cloudinary.uploader.upload(image, { folder: 'properties' });
+				urlsOfImages.push({ url: resp.url, public_id: resp.public_id });
 			}
 			const tempProperty = { ...req.body, images: urlsOfImages, publisher_id: user_id };
 			const property = await Property.create(tempProperty);
@@ -30,7 +30,9 @@ const createNewProperty = async (req, res) => {
 const removeProperty = async (req, res) => {
 	const user_id = String(req.user._id);
 	const { id } = req.params;
-	const property = await Property.findOneAndDelete({ _id: id, publisher_id: user_id });
+	const resp = await Property.findOneAndDelete({ _id: id, publisher_id: user_id });
+	const images = resp.images;
+
 	res.status(200).json({ message: 'განცხადება წაიშალა!' });
 };
 
